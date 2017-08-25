@@ -1,0 +1,19 @@
+{
+  "name": "lista-telefonica",
+  "version": "1.0.0",
+  "description": "aulas do Rodrigo Branas",
+  "main": "index.js",
+  "scripts": {
+    "test": "python -m SimpleHTTPServer 8001"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/julioc98/angularjs-study/lista-telefonica"
+  },
+  "author": "julioc98",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.6.6",
+    "bootstrap": "^3.3.7"
+  }
+}
