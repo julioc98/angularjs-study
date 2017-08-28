@@ -6,7 +6,7 @@
   <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
   <style>
     .jumbotron {
-      width: 400px;
+      width: 600px;
       text-align: center;
       margin-top: 20px;
       margin-left: auto;
@@ -36,9 +36,9 @@
     angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function ($scope) {
       $scope.app = "Lista Telefonica";
       $scope.contatos = [
-        { nome: "Pedro", telefone: "99998888", cor: "blue" },
-        { nome: "Ana", telefone: "99998877", cor: "yellow" },
-        { nome: "Maria", telefone: "99998866", cor: "red" }
+        { nome: "Pedro", telefone: "99998888", cor: "blue", data: new Date() },
+        { nome: "Ana", telefone: "99998877", cor: "yellow", data: new Date()},
+        { nome: "Maria", telefone: "99998866", cor: "red", data: new Date() }
       ];
       $scope.operadoras = [
         { nome: "Oi", codigo: 14, categoria: "Celular" },
@@ -69,19 +69,21 @@
 <body ng-controller="listaTelefonicaCtrl">
   <div class="jumbotron">
     <h3>{{app}}</h3>
+    <input class="form-control" type="text" ng-model="criteriooDeBusca" placeholder="O que você esta buscando?">
     <table ng-show="contatos.length > 0" class="table">
       <tr>
         <th></th>
         <th>Nome</th>
         <th>Telefone</th>
         <th>Operadora</th>
-        <th></th>
+        <th>Data</th>
       </tr>
       <tr ng-class="{'selecionado negrito': contato.selecionado}" ng-repeat="contato in contatos">
         <td><input type="checkbox" ng-model="contato.selecionado" /></td>
-        <td>{{contato.nome}}</td>
+        <td>{{contato.nome | uppercase}}</td>
         <td>{{contato.telefone}}</td>
-        <td>{{contato.operadora.nome}}</td>
+        <td>{{contato.operadora.nome | lowercase}}</td>
+        <td>{{contato.data | date:'dd/MM/yyyy'}}</td>
         <td>
           <div style="width: 20px; height: 20px;" ng-style="{'background-color': contato.cor}"></div>
         </td>
@@ -92,7 +94,7 @@
 
     <form name="contatoForm">
       <input name="nome" class="form-control" type="text" ng-model="contato.nome" placeholder="Nome" ng-required="true" ng-minlength="3"
-      />
+      /> 
       <!-- RegEx:
                  // = comeca e termina
                  ^ = so conta a partir da li & $ = termina exatamente aqui
