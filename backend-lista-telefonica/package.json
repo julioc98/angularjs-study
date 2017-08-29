@@ -1,0 +1,14 @@
+{
+  "name": "backend-lista-telefonica",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "julioc98",
+  "license": "ISC",
+  "dependencies": {
+    "express": "3.x"
+  }
+}

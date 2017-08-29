@@ -34,24 +34,32 @@
   <script src="node_modules/angular-messages/angular-messages.min.js"></script>
   <script>
     angular.module("listaTelefonica", ["ngMessages"]);
-    angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function ($scope, $filter) {
+    angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function ($scope, $http) {
       $scope.app = "Lista Telefonica";
-      $scope.contatos = [
-        { nome: $filter('uppercase')("Pedro"), telefone: "99998888", cor: "blue", data: new Date() },
-        { nome: "Ana", telefone: "99998877", cor: "yellow", data: new Date()},
-        { nome: "Maria", telefone: "99998866", cor: "red", data: new Date() }
-      ];
-      $scope.operadoras = [
-        { nome: "Oi", codigo: 14, categoria: "Celular", preco:2 },
-        { nome: "Vivo", codigo: 15, categoria: "Celular", preco:1 },
-        { nome: "Tim", codigo: 41, categoria: "Celular", preco:3 },
-        { nome: "GVT", codigo: 25, categoria: "Fixo", preco:2 },
-        { nome: "Embratel", codigo: 21, categoria: "Fixo", preco:2 }
-      ];
+      $scope.contatos = [];
+
+      $scope.operadoras = [];
+
+      var carregarContatos = function () {
+        $http.get("http://localhost:3412/contatos").then(function (response, status) {
+          $scope.contatos = response.data;
+        });
+      }
+
+      var carregarOperadoras = function () {
+        $http.get("http://localhost:3412/operadoras").then(function (response) {
+          $scope.operadoras = response.data;
+        });
+      }
+
       $scope.adicionarContato = function (contato) {
-        $scope.contatos.push(angular.copy(contato));
-        delete $scope.contato;
-        $scope.contatoForm.$setPristine();
+        contato.data = new Date();
+        $http.post("http://localhost:3412/contatos", contato).then(function (response) {
+          delete $scope.contato;
+          $scope.contatoForm.$setPristine();
+          // $scope.contatos.push(angular.copy(contato));
+          carregarContatos();
+        })
       };
       $scope.apagarContatos = function (contatos) {
         $scope.contatos = contatos.filter(function (contato) {
@@ -68,6 +76,9 @@
         $scope.criterioDeOrdenacao = campo;
         $scope.direcaoDaOrdenacao = !$scope.direcaoDaOrdenacao;
       }
+
+      carregarContatos();
+      carregarOperadoras();
 
     });
   </script>
@@ -101,7 +112,7 @@
 
     <form name="contatoForm">
       <input name="nome" class="form-control" type="text" ng-model="contato.nome" placeholder="Nome" ng-required="true" ng-minlength="3"
-      /> 
+      />
       <!-- RegEx:
                  // = comeca e termina
                  ^ = so conta a partir da li & $ = termina exatamente aqui
